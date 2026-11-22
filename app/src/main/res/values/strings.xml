@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ytm-alice</string>
+
+    <string name="setup_subtitle">Пульт для Яндекс Станции</string>
+    <string name="setup_address_label">Адрес Станции</string>
+    <string name="setup_address_hint">192.168.1.50:24721</string>
+    <string name="setup_address_help">IP-адрес колонки, имя alice.lan или полный адрес панели</string>
+    <string name="setup_connect">Подключиться</string>
+    <string name="setup_find">Найти Станцию в сети</string>
+    <string name="setup_footer">Музыка играет на колонке. Приложение открывает веб-панель ytm-alice: поиск, очередь, лайки, плейлисты и настройки. Телефон и Станция должны быть в одной сети.</string>
+
+    <string name="status_checking">Проверяем подключение…</string>
+    <string name="status_found">Найдено: %1$s</string>
+    <string name="status_searching">Ищем Станцию в локальной сети… Это может занять до 15 секунд.</string>
+    <string name="status_not_found">Станция не найдена. Проверьте, что телефон в той же сети, или введите адрес вручную.</string>
+    <string name="error_invalid_address">Неверный адрес. Пример: 192.168.1.50:24721</string>
+    <string name="error_unreachable">Не удалось подключиться к панели. Проверьте адрес, сеть и то, что на Станции запущен ytm-alice.</string>
+
+    <string name="error_title">Нет связи со Станцией</string>
+    <string name="error_body">Не удалось открыть веб-панель. Проверьте, что телефон и Станция в одной сети, и повторите попытку.</string>
+    <string name="error_retry">Повторить</string>
+    <string name="error_change">Сменить адрес</string>
+
+    <string name="menu_reconnect">Переподключиться</string>
+    <string name="menu_address">Сменить адрес Станции</string>
+    <string name="menu_browser">Открыть в браузере</string>
+    <string name="menu_about">О приложении</string>
+    <string name="menu_more">Меню</string>
+
+    <string name="exit_title">Закрыть пульт?</string>
+    <string name="exit_message">Музыка продолжит играть на Станции.</string>
+    <string name="exit_ok">Закрыть</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="about_title">О приложении</string>
+    <string name="about_body">ytm-alice remote %1$s\n\nПульт для ytm-alice — автономного YouTube Music для Яндекс Станции.\n\nМузыка воспроизводится на самой колонке. Приложение открывает встроенную веб-панель по локальной сети.\n\nИсходный проект: github.com/SPAWNRYS-ban/ytm-alice\n\nСборка: %2$s</string>
+
+    <string name="choose_station">Выберите Станцию</string>
+    <string name="network_off">Нет сети. Подключите телефон к Wi-Fi той же сети, что и Станция.</string>
+    <string name="saved_ok">Подключено: ytm-alice %1$s</string>
+    <string name="version_unknown">версия неизвестна</string>
+</resources>
