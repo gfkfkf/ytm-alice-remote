@@ -2,8 +2,10 @@ package ru.ytmalice.remote;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
@@ -350,6 +352,7 @@ public class MainActivity extends Activity {
             prefs.edit().putString(KEY_URL, normalized).apply();
             showPanel();
             startLoading(normalized);
+            refreshWidgets();
         });
     }
 
@@ -371,6 +374,7 @@ public class MainActivity extends Activity {
                 setStatus(getString(R.string.status_found, prettyAddress(url)), false);
                 showPanel();
                 startLoading(url);
+                refreshWidgets();
                 return;
             }
             setStatus(getString(R.string.status_found, String.valueOf(results.size())), false);
@@ -387,6 +391,7 @@ public class MainActivity extends Activity {
                         prefs.edit().putString(KEY_URL, url).apply();
                         showPanel();
                         startLoading(url);
+                        refreshWidgets();
                     })
                     .setNegativeButton(R.string.cancel, null)
                     .show();
@@ -582,7 +587,16 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    // ------------------------------------------------------------------ Utils
+    private void refreshWidgets() {
+        try {
+            AppWidgetManager mgr = AppWidgetManager.getInstance(this);
+            ComponentName cn = new ComponentName(this, TrackWidget.class);
+            int[] ids = mgr.getAppWidgetIds(cn);
+            for (int id : ids) {
+                TrackWidget.updateWidget(this, mgr, id);
+            }
+        } catch (Exception ignored) {}
+    }
 
     /**
      * Accepts "192.168.1.50", "alice.lan", "192.168.1.50:24721" or a full URL

@@ -40,4 +40,5 @@
     <string name="network_off">Нет сети. Подключите телефон к Wi-Fi той же сети, что и Станция.</string>
     <string name="saved_ok">Подключено: ytm-alice %1$s</string>
     <string name="version_unknown">версия неизвестна</string>
+    <string name="widget_description">Пульт ytm-alice: текущий трек и управление</string>
 </resources>
