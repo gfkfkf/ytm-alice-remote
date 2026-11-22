@@ -3,6 +3,7 @@ package ru.ytmalice.remote;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,10 @@ public class TrackWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int id : appWidgetIds) {
-            updateWidget(context, appWidgetManager, id);
+            final int widgetId = id;
+            final Context ctx = context.getApplicationContext();
+            final AppWidgetManager mgr = appWidgetManager;
+            new Thread(() -> updateWidget(ctx, mgr, widgetId)).start();
         }
     }
 
@@ -40,6 +44,10 @@ public class TrackWidget extends AppWidgetProvider {
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
         if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             int[] ids = mgr.getAppWidgetIds(new ComponentName(context, TrackWidget.class));
+            for (int id : ids) handleAction(context, mgr, id, action);
+            ids = mgr.getAppWidgetIds(new ComponentName(context, TrackWidgetCompact.class));
+            for (int id : ids) handleAction(context, mgr, id, action);
+            ids = mgr.getAppWidgetIds(new ComponentName(context, TrackWidgetLarge.class));
             for (int id : ids) handleAction(context, mgr, id, action);
         } else {
             handleAction(context, mgr, widgetId, action);
@@ -57,6 +65,20 @@ public class TrackWidget extends AppWidgetProvider {
             } catch (Exception ignored) {}
             updateWidget(context, mgr, id);
         }).start();
+    }
+
+    static int layoutFor(Context context, int id) {
+        try {
+            AppWidgetProviderInfo info = AppWidgetManager.getInstance(context).getAppWidgetInfo(id);
+            if (info != null) {
+                String cls = info.provider.getClassName();
+                if (cls != null) {
+                    if (cls.endsWith("Compact")) return R.layout.widget_compact;
+                    if (cls.endsWith("Large")) return R.layout.widget_large;
+                }
+            }
+        } catch (Exception ignored) {}
+        return R.layout.widget_track;
     }
 
     static String getServerUrl(Context context) {
@@ -82,7 +104,7 @@ public class TrackWidget extends AppWidgetProvider {
     }
 
     static void updateWidget(Context context, AppWidgetManager mgr, int id) {
-        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_track);
+        RemoteViews rv = new RemoteViews(context.getPackageName(), layoutFor(context, id));
         String url = getServerUrl(context);
         if (url == null) {
             rv.setTextViewText(R.id.widget_title, "ytm-alice");
