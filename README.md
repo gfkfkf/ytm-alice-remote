@@ -61,6 +61,25 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 -VersionName 1.0.0 -Version
 Иконки пересобираются скриптом `tools/make-icons.ps1` (System.Drawing), если
 их нет в `res/mipmap-*`.
 
+## Windows (десктоп)
+
+Готовый exe: `windows/dist/ytm-alice-remote.exe` (также прикреплён к релизу).
+
+Требования: Windows 10/11 с WebView2 Runtime (обычно уже установлен с Edge).
+
+Запуск: откройте exe, на первом экране введите адрес Станции или нажмите
+«Найти Станцию в сети». Адрес сохраняется в
+`%APPDATA%\ytm-alice-remote\config.json`. Сменить адрес: меню «Файл → Сменить
+адрес Станции».
+
+Сборка из исходников:
+
+```powershell
+cd windows
+pip install pywebview pyinstaller pillow
+powershell -ExecutionPolicy Bypass -File .\build.ps1
+```
+
 ## Проверка без Станции
 
 В репозитории есть мок веб-панели, который отдаёт настоящие файлы панели и
