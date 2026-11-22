@@ -68,7 +68,7 @@ https://github.com/gfkfkf/ytm-alice-remote/releases/download/v1.0.0/ytm-alice-re
 
 Требования: Windows 10/11 с WebView2 Runtime (обычно уже установлен с Edge).
 
-Запуск: откройте exe, на первом экране введите адрес Станции или нажмите
+Подробная документация: [windows/README.md](windows/README.md).
 «Найти Станцию в сети». Адрес сохраняется в
 `%APPDATA%\ytm-alice-remote\config.json`. Сменить адрес: меню «Файл → Сменить
 адрес Станции».
