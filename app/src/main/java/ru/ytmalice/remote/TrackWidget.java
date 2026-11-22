@@ -39,6 +39,7 @@ public class TrackWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
+        android.util.Log.d("TrackWidget", "onReceive action=" + action);
         if (action == null) return;
         int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
@@ -56,13 +57,18 @@ public class TrackWidget extends AppWidgetProvider {
 
     static void handleAction(Context context, AppWidgetManager mgr, int id, String action) {
         String url = getServerUrl(context);
+        android.util.Log.d("TrackWidget", "handleAction action=" + action + " url=" + url);
         if (url == null) { updateWidget(context, mgr, id); return; }
         new Thread(() -> {
             try {
                 if (ACTION_PLAY_PAUSE.equals(action)) sendCommand(url, "toggle");
                 else if (ACTION_NEXT.equals(action)) sendCommand(url, "next");
                 else if (ACTION_PREV.equals(action)) sendCommand(url, "previous");
-            } catch (Exception ignored) {}
+                android.util.Log.d("TrackWidget", "command sent ok: " + action);
+                try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+            } catch (Exception e) {
+                android.util.Log.e("TrackWidget", "command failed: " + action, e);
+            }
             updateWidget(context, mgr, id);
         }).start();
     }
@@ -94,12 +100,26 @@ public class TrackWidget extends AppWidgetProvider {
         c.setRequestMethod("POST");
         c.setRequestProperty("Content-Type", "application/json");
         c.setRequestProperty("X-Ytm-Client", "web");
+        // ytm-alice panel rejects POSTs without a matching Origin header.
+        URL originUrl = new URL(base);
+        String origin = originUrl.getProtocol() + "://" + originUrl.getAuthority();
+        c.setRequestProperty("Origin", origin);
         c.setDoOutput(true);
         c.setConnectTimeout(4000);
         c.setReadTimeout(4000);
         String body = "{\"action\":\"" + action + "\"}";
         c.getOutputStream().write(body.getBytes("UTF-8"));
-        c.getResponseCode();
+        int code = c.getResponseCode();
+        // read response
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(
+                code >= 400 ? c.getErrorStream() : c.getInputStream(), "UTF-8"))) {
+            String line;
+            while ((line = r.readLine()) != null) sb.append(line);
+        } catch (Exception ignored) {}
+        String shortBody = sb.length() > 200 ? sb.substring(0, 200) : sb.toString();
+        android.util.Log.d("TrackWidget", "sendCommand " + action + " -> HTTP " + code + " body=" + shortBody);
+        if (code != 200) throw new Exception("HTTP " + code + ": " + sb.toString());
         c.disconnect();
     }
 
