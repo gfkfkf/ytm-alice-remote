@@ -61,6 +61,11 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 -VersionName 1.0.0 -Version
 Иконки пересобираются скриптом `tools/make-icons.ps1` (System.Drawing), если
 их нет в `res/mipmap-*`.
 
+## Windows
+
+Отдельный репозиторий: https://github.com/gfkfkf/ytm-alice-remote-windows
+(нативное приложение на .NET/WinForms/WebView2).
+
 ## Проверка без Станции
 
 В репозитории есть мок веб-панели, который отдаёт настоящие файлы панели и
