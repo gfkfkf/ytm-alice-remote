@@ -63,7 +63,8 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 -VersionName 1.0.0 -Version
 
 ## Windows (десктоп)
 
-Готовый exe: `windows/dist/ytm-alice-remote.exe` (также прикреплён к релизу).
+Готовый exe: `windows/dist/ytm-alice-remote.exe` (также прикреплён к релизу:
+https://github.com/gfkfkf/ytm-alice-remote/releases/download/v1.0.0/ytm-alice-remote-windows.exe).
 
 Требования: Windows 10/11 с WebView2 Runtime (обычно уже установлен с Edge).
 
